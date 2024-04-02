@@ -18,7 +18,7 @@ $$
 and
 
 $$
-Var(X_t) = \frac{\sigma^2}{2\theta}(1 - e^{-2\theta t})
+\mathrm{Var}(X_t) = \frac{\sigma^2}{2\theta}(1 - e^{-2\theta t})
 $$
 
 ## Solution to Ornstein-Uhlenbeck Stochastic Differential Equation
@@ -50,7 +50,7 @@ $$
 and
 
 $$
-Var(X_t) = \frac{\sigma^2}{2\theta}(1 - e^{-2\theta t})
+\mathrm{Var}(X_t) = \frac{\sigma^2}{2\theta}(1 - e^{-2\theta t})
 $$
 
 ## Maximum Likelihood Estimation
