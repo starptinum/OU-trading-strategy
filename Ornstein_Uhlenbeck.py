@@ -2,25 +2,25 @@ import numpy as np
 
 
 class Ornstein_Uhlenbeck:
-    def __init__(self, St1, St2):
-        self.St1 = St1  # first pair
-        self.St2 = St2  # second pair
+    def __init__(self, Sta, Stb):
+        self.Sta = Sta  # first pair
+        self.Stb = Stb  # second pair
         self.dt = 1 / 252
-        self.n = self.St1.shape[0] - 1
+        self.n = self.Sta.shape[0] - 1
         self.lb = np.zeros_like(0)
         self.ub = 1
         self.trial = 1000  # number of k to be tested
-        self.alpha = 1 / self.St1[0]
-        self.k, self.X, self.mu, self.theta, self.sigma2 = self.get_best_parameters()
-        self.beta = self.k / self.St2[0]
+        self.alpha = 1 / self.Sta[0]
+        self.l, self.k, self.X, self.mu, self.theta, self.sigma2 = self.get_best_parameters()
+        self.beta = self.k / self.Stb[0]
 
     def get_best_parameters(self):
         k_list = np.linspace(self.lb, self.ub, self.trial)
         best_l = - np.inf
         best_k, best_X, best_mu, best_theta, best_sigma2 = [None] * 5
         for k in k_list:
-            beta = k / self.St2[0]
-            X = self.alpha * self.St1 - beta * self.St2
+            beta = k / self.Stb[0]
+            X = self.alpha * self.Sta - beta * self.Stb
             Xa = X[: -1]
             Xb = X[1:]
             Sa = np.sum(Xa)
@@ -42,6 +42,5 @@ class Ornstein_Uhlenbeck:
                             Sa + Sb - self.n * mu) + gamma ** 2 * (Saa - 2 * mu * Sa + self.n * mu ** 2)) / (
                             sigma2 * (1 - gamma ** 2))
             if l > best_l:
-                best_l = l
-                best_k, best_X, best_mu, best_theta, best_sigma2 = k, X, mu, theta, sigma2
-        return best_k, best_X, best_mu, best_theta, best_sigma2
+                best_l, best_k, best_X, best_mu, best_theta, best_sigma2 = l, k, X, mu, theta, sigma2
+        return best_l, best_k, best_X, best_mu, best_theta, best_sigma2
