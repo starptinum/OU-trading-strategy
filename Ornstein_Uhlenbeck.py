@@ -3,13 +3,13 @@ import numpy as np
 
 class Ornstein_Uhlenbeck:
     def __init__(self, St1, St2):
-        self.St1 = St1
-        self.St2 = St2
+        self.St1 = St1  # first pair
+        self.St2 = St2  # second pair
         self.dt = 1 / 252
         self.n = self.St1.shape[0] - 1
         self.lb = np.zeros_like(0)
         self.ub = 1
-        self.trial = 1000
+        self.trial = 1000  # number of k to be tested
         self.alpha = 1 / self.St1[0]
         self.k, self.X, self.mu, self.theta, self.sigma2 = self.get_best_parameters()
         self.beta = self.k / self.St2[0]
