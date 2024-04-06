@@ -12,7 +12,7 @@ class Ornstein_Uhlenbeck:
         self.trial = 1000  # number of k to be tested
         self.alpha = 1 / self.Sta[0]
         self.l, self.k, self.X, self.mu, self.theta, self.sigma2 = self.get_best_parameters()
-        self.beta = self.k / self.Stb[0]
+        self.beta = self.k / self.Stb[0] if self.k is not None else None
 
     def get_best_parameters(self):
         k_list = np.linspace(self.lb, self.ub, self.trial)
@@ -37,10 +37,7 @@ class Ornstein_Uhlenbeck:
                             mu * (1 - gamma)) ** 2) / (self.n * (1 - gamma ** 2))
             if theta <= 0:
                 continue
-            l = - 0.5 * self.n * np.log(sigma2 / (2 * theta)) - 0.5 * self.n * np.log(1 - gamma ** 2) - theta * (
-                        Sbb - 2 * mu * Sb + self.n * mu ** 2 - 2 * gamma * Sab + 2 * gamma * mu * (
-                            Sa + Sb - self.n * mu) + gamma ** 2 * (Saa - 2 * mu * Sa + self.n * mu ** 2)) / (
-                            sigma2 * (1 - gamma ** 2))
+            l = (- 0.5 * self.n * np.log(sigma2 / (2 * theta)) - 0.5 * self.n * np.log(1 - gamma ** 2) - theta * (Sbb - 2 * mu * Sb + self.n * mu ** 2 - 2 * gamma * Sab + 2 * gamma * mu * (Sa + Sb - self.n * mu) + gamma ** 2 * (Saa - 2 * mu * Sa + self.n * mu ** 2)) / (sigma2 * (1 - gamma ** 2))) / self.n
             if l > best_l:
                 best_l, best_k, best_X, best_mu, best_theta, best_sigma2 = l, k, X, mu, theta, sigma2
         return best_l, best_k, best_X, best_mu, best_theta, best_sigma2
