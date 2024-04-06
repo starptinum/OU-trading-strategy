@@ -9,7 +9,15 @@ $$
 dX_t = \theta(\mu - X_t)dt + \sigma dW_t
 $$
 
-where $X_t$ is the process at time $t$, $\mu$ is the mean, $\theta$ is the rate of mean reversion, $\sigma$ is the volatiliy, $W_t$ is a standard Brownian motion, and $X_0=x_0$ is the initial value. The process $X_t$ is normally distributed with
+where 
+- $X_t$ is the process at time $t$
+- $\mu$ is the mean
+- $\theta$ is the rate of mean reversion
+- $\sigma$ is the volatiliy
+- $W_t$ is a standard Brownian motion
+- $X_0=x_0$ is the initial value.
+
+The process $X_t$ is normally distributed with
 
 $$
 \mathbb{E}[X_t] = \mu + (x_0 - \mu)e^{-\theta t}
@@ -87,17 +95,15 @@ The trading strategy is based on the pair $X_t=\frac{1}{S_0^1}S_t^1-\frac{k}{S_0
 
 The strategy involves the following steps for each trading day $t$:
 1. If there is no existing position:
-  - Long the pairs if $X_t$ is less than the $\alpha$-percentile of $X_s$ in the model formation period.
-  - Short the pairs if $X_t$ is greater than the $(1-\alpha)$-percentile of $X_s$ in the model formation period.
+  - Long the pairs if $X_t$ is less than $\mathbb{E}[X_t] - z\sqrt{\mathrm{Var}(X_t)}$, where $z$ is the $z$-score.
+  - Short the pairs if $X_t$ is greater than $\mathbb{E}[X_t] + z\sqrt{\mathrm{Var}(X_t)}$.
   
 2. If there is a long position:
-  - Unwind the position if $X_t$ is greater than or equal to $\mu^\*$.
+  - Implement a stop loss if $X_t$ is less than $X_s - z\sqrt{\mathrm{Var}(X_t)}$, where $X_s$ represents the spread when the position was entered.
+  - Unwind the position if $X_t$ is greater than or equal to $\mathbb{E}[X_t] + z\sqrt{\mathrm{Var}(X_t)}$.
 
 3. If there is a short position:
-  - Unwind the position if $X_t$ is less than or equal to $\mu^\*$.
-
-The parameters will be recalibrated every 252 trading days.
-
-Please note that to use this strategy, you will need to have historical price data for the underlying assets and determine appropriate values for $\mu^\*$ and $\alpha$ based on your specific requirements.
+  - Implement a stop loss if $X_t$ is greater than $X_s + z\sqrt{\mathrm{Var}(X_t)}$.
+  - Unwind the position if $X_t$ is less than or equal to $\mathbb{E}[X_t] - z\sqrt{\mathrm{Var}(X_t)}$.
 
 For more details, please refer to the code and documentation in this repository.
