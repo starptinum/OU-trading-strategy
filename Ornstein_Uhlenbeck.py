@@ -29,14 +29,11 @@ class Ornstein_Uhlenbeck:
             Sbb = np.sum(Xb * Xb)
             Sab = np.sum(Xa * Xb)
             mu = (Sb * Saa - Sa * Sab) / (self.n * (Saa - Sab) + Sa * (Sb - Sa))
-            theta = - np.log(
-                (Sab - mu * (Sa + Sb) + self.n * mu * mu) / (Saa - 2 * mu * Sa + self.n * mu * mu)) / self.dt
-            gamma = np.exp(- theta * self.dt)
-            sigma2 = 2 * theta * (
-                        Sbb - 2 * gamma * Sab + gamma ** 2 * Saa - 2 * mu * (1 - gamma) * (Sb - gamma * Sa) + self.n * (
-                            mu * (1 - gamma)) ** 2) / (self.n * (1 - gamma ** 2))
+            theta = - np.log((Sab - mu * (Sa + Sb) + self.n * mu * mu) / (Saa - 2 * mu * Sa + self.n * mu * mu)) / self.dt
             if theta <= 0:
                 continue
+            gamma = np.exp(- theta * self.dt)
+            sigma2 = 2 * theta * (Sbb - 2 * gamma * Sab + gamma ** 2 * Saa - 2 * mu * (1 - gamma) * (Sb - gamma * Sa) + self.n * (mu * (1 - gamma)) ** 2) / (self.n * (1 - gamma ** 2))
             l = (- 0.5 * self.n * np.log(sigma2 / (2 * theta)) - 0.5 * self.n * np.log(1 - gamma ** 2) - theta * (Sbb - 2 * mu * Sb + self.n * mu ** 2 - 2 * gamma * Sab + 2 * gamma * mu * (Sa + Sb - self.n * mu) + gamma ** 2 * (Saa - 2 * mu * Sa + self.n * mu ** 2)) / (sigma2 * (1 - gamma ** 2))) / self.n
             if l > best_l:
                 best_l, best_k, best_X, best_mu, best_theta, best_sigma2 = l, k, X, mu, theta, sigma2
