@@ -95,15 +95,13 @@ The trading strategy is based on the pair $X_t=\frac{1}{S_0^1}S_t^1-\frac{k}{S_0
 
 The strategy involves the following steps for each trading day $t$:
 1. If there is no existing position:
-  - Long the pairs if $X_t$ is less than $\mathbb{E}[X_t] - z\sqrt{\mathrm{Var}(X_t)}$, where $z$ is the $z$-score.
-  - Short the pairs if $X_t$ is greater than $\mathbb{E}[X_t] + z\sqrt{\mathrm{Var}(X_t)}$.
+  - Long the pairs if $X_t$ is less than $\mathbb{E}[X_\infty] - z\sqrt{\mathrm{Var}(X_\infty)}$, where $z$ is the $z$-score.
+  - Short the pairs if $X_t$ is greater than $\mathbb{E}[X_\infty] + z\sqrt{\mathrm{Var}(X_\infty)}$.
   
 2. If there is a long position:
-  - Implement a stop loss if $X_t$ is less than $X_s - z\sqrt{\mathrm{Var}(X_t)}$, where $X_s$ represents the spread when the position was entered.
-  - Unwind the position if $X_t$ is greater than or equal to $\mathbb{E}[X_t] + z\sqrt{\mathrm{Var}(X_t)}$.
+  - Unwind the position if $X_t$ is greater than or equal to $\mathbb{E}[X_\infty]$.
 
 3. If there is a short position:
-  - Implement a stop loss if $X_t$ is greater than $X_s + z\sqrt{\mathrm{Var}(X_t)}$.
-  - Unwind the position if $X_t$ is less than or equal to $\mathbb{E}[X_t] - z\sqrt{\mathrm{Var}(X_t)}$.
+  - Unwind the position if $X_t$ is less than or equal to $\mathbb{E}[X_\infty]$.
 
 For more details, please refer to the code and documentation in this repository.
